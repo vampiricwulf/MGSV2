@@ -4,11 +4,11 @@
 #define KEY_TEMPERATURE_F 2
 #define KEY_POWERSAVING 3
 #define KEY_IMPERIAL 4
-// #define GColorGreen ((uint8_t)0b11001100
-// #define GColorSpringBud (GColor8){.argb=GColorSpringBudARGB8}
-// #define GColorYellow (GColor8){.argb=GColorYellowARGB8}
-// #define GColorOrange (GColor8){.argb=GColorOrangeARGB8}
-// #define GColorRed ((uint8_t)0b11110000)
+//#define GColorGreen ((uint8_t)0b11001100
+//#define GColorSpringBud (GColor8){.argb=GColorSpringBudARGB8}
+//#define GColorYellow (GColor8){.argb=GColorYellowARGB8}
+//#define GColorOrange (GColor8){.argb=GColorOrangeARGB8}
+//#define GColorRed ((uint8_t)0b11110000)
   
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -47,6 +47,11 @@ static GFont s_time_small_font;
 
 static int s_battery_level;
 static TextLayer *s_weather_layer;
+static TextLayer *s_first_layer;
+static TextLayer *s_second_layer;
+static TextLayer *s_third_layer;
+static TextLayer *s_fourth_layer;
+static TextLayer *s_fifth_layer;
 static bool s_power_saving = false;
 static bool s_temp_format_f = false;
 
@@ -59,10 +64,10 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   static char weather_layer_buffer[32];
   
 //   Tuple *power_saving_t = dict_find(iterator, KEY_POWERSAVING);
-//   Tuple *temp_formate_f_t = dict_find(iterator, KEY_IMPERIAL);
+  Tuple *temp_formate_f_t = dict_find(iterator, KEY_IMPERIAL);
   
 //   s_power_saving = power_saving_t->value->int8;
-//   s_temp_format_f = temp_formate_f_t->value->int8;
+  s_temp_format_f = temp_formate_f_t->value->int8;
   
   // Read first item
   Tuple *t = dict_read_first(iterator);
@@ -384,16 +389,16 @@ static void main_window_load(Window *window){
   
   
   //day layer, load all bitmap
-//   s_day_mo_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MO);
-//   s_day_tu_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TU);
-//   s_day_we_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_WE);
-//   s_day_th_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TH);
-//   s_day_fr_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_FR);
-//   s_day_sa_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SA);
-//   s_day_su_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SU);
-//   s_day_layer = bitmap_layer_create(GRect(98, 88, 35, 20));
-//   bitmap_layer_set_bitmap(s_day_layer, s_day_mo_bitmap);
-//   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_day_layer));
+  //s_day_mo_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MO);
+  //s_day_tu_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TU);
+  //s_day_we_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_WE);
+  //s_day_th_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TH);
+  //s_day_fr_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_FR);
+  //s_day_sa_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SA);
+  //s_day_su_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SU);
+  //s_day_layer = bitmap_layer_create(GRect(105, 105, 35, 20));
+  //bitmap_layer_set_bitmap(s_day_layer, s_day_mo_bitmap);
+  //layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_day_layer));
   
   // Create time TextLayer
   s_time_layer = text_layer_create(GRect(34, 70, 150, 50));
@@ -416,10 +421,36 @@ static void main_window_load(Window *window){
   text_layer_set_text_color(s_date_layer, GColorBlack);
   text_layer_set_text(s_date_layer, "2015 sep 16");
   
+  // Placeholders
+  s_first_layer = text_layer_create(GRect(116,1,50,15));
+  text_layer_set_background_color(s_first_layer, GColorClear);
+  text_layer_set_text_color(s_first_layer, GColorBlack);
+  text_layer_set_text(s_first_layer, "CHA");
+  
+  s_second_layer = text_layer_create(GRect(117,12,50,15));
+  text_layer_set_background_color(s_second_layer, GColorClear);
+  text_layer_set_text_color(s_second_layer, GColorBlack);
+  text_layer_set_text(s_second_layer, "ALM");
+  
+  s_third_layer = text_layer_create(GRect(116,23,50,15));
+  text_layer_set_background_color(s_third_layer, GColorClear);
+  text_layer_set_text_color(s_third_layer, GColorBlack);
+  text_layer_set_text(s_third_layer, "DATA");
+  
+  s_fourth_layer = text_layer_create(GRect(116,34,50,15));
+  text_layer_set_background_color(s_fourth_layer, GColorClear);
+  text_layer_set_text_color(s_fourth_layer, GColorBlack);
+  text_layer_set_text(s_fourth_layer, "PWR.S");
+  
+  s_fifth_layer = text_layer_create(GRect(116,45,50,15));
+  text_layer_set_background_color(s_fifth_layer, GColorClear);
+  text_layer_set_text_color(s_fifth_layer, GColorBlack);
+  text_layer_set_text(s_fifth_layer, "TEMP");
+  
   // Create temperature Layer
-  s_weather_layer = text_layer_create(GRect(77,-8,50,15));
+  s_weather_layer = text_layer_create(GRect(30,30,50,15));
   text_layer_set_background_color(s_weather_layer, GColorClear);
-  text_layer_set_text_color(s_weather_layer, GColorWhite);
+  text_layer_set_text_color(s_weather_layer, GColorBlack);
   text_layer_set_text(s_weather_layer, "Loading...");
   
   s_weekday_text_layer = text_layer_create(GRect(115, 100, 50, 30));
@@ -440,6 +471,11 @@ static void main_window_load(Window *window){
   text_layer_set_font(s_weekday_text_layer, s_time_mid_font);
   text_layer_set_font(s_date_layer, s_time_font);
   text_layer_set_font(s_weather_layer, s_letter_font);
+  text_layer_set_font(s_first_layer, s_letter_font);
+  text_layer_set_font(s_second_layer, s_letter_font);
+  text_layer_set_font(s_third_layer, s_letter_font);
+  text_layer_set_font(s_fourth_layer, s_letter_font);
+  text_layer_set_font(s_fifth_layer, s_letter_font);
 
   // Improve the layout to be more like a watchface
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentLeft);
@@ -447,15 +483,25 @@ static void main_window_load(Window *window){
   text_layer_set_text_alignment(s_am_pm_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_weekday_text_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentLeft);
-  text_layer_set_text_alignment(s_weather_layer, GTextAlignmentRight);
+  text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_first_layer, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_second_layer, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_third_layer, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_fourth_layer, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_fifth_layer, GTextAlignmentLeft);
 
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_sec_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_am_pm_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
-//   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
+  //layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weekday_text_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_first_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_second_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_third_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_fourth_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_fifth_layer));
   
   
   // Create battery meter Layer
@@ -471,8 +517,8 @@ static void main_window_load(Window *window){
   
   // Add to Window
   layer_add_child(window_get_root_layer(window), s_battery_layer);
-//   layer_add_child(window_get_root_layer(window), s_bt_layer);
-//   layer_add_child(window_get_root_layer(window), s_setting_layer);
+  //layer_add_child(window_get_root_layer(window), s_bt_layer);
+  //layer_add_child(window_get_root_layer(window), s_setting_layer);
   
   s_power_saving = persist_read_bool(KEY_POWERSAVING);
   s_temp_format_f = persist_read_bool(KEY_IMPERIAL);
