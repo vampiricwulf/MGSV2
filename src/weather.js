@@ -10,18 +10,18 @@ var xhrRequest = function (url, type, callback) {
 function locationSuccess(pos) {
   // Construct URL
   var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
-      pos.coords.latitude + "&lon=" + pos.coords.longitude;
-
+      pos.coords.latitude + "&lon=" + pos.coords.longitude + "&APPID=f367ed89f1ce4abf011df37b82633adc";
   // Send request to OpenWeatherMap
   xhrRequest(url, 'GET', 
     function(responseText) {
       // responseText contains a JSON object with weather info
       var json = JSON.parse(responseText);
-
+      
+/*
       // Temperature in Kelvin requires adjustment
       var temperature_c = Math.round(json.main.temp - 273.15);
       console.log("Temperature c is " + temperature_c);
-
+*/
       // Temperature in Kelvin requires adjustment to f
       var temperature_f = Math.round(json.main.temp * 9/5 - 459.67);
       console.log("Temperature f is " + temperature_f);
@@ -33,7 +33,7 @@ function locationSuccess(pos) {
       // Assemble dictionary using our keys
       var dictionary = {
         "KEY_CONDITIONS": conditions,
-        "KEY_TEMPERATURE_C": temperature_c,
+//        "KEY_TEMPERATURE_C": temperature_c,
         "KEY_TEMPERATURE_F": temperature_f,
       };
 
@@ -88,7 +88,7 @@ Pebble.addEventListener('showConfiguration', function() {
 
   Pebble.openURL(url);
 });
-
+/*
 Pebble.addEventListener('webviewclosed', function(e) {
   var configData = JSON.parse(decodeURIComponent(e.response));
   console.log('Configuration page returned: ' + JSON.stringify(configData));
@@ -123,3 +123,4 @@ Pebble.addEventListener('webviewclosed', function(e) {
     });
   
 });
+*/

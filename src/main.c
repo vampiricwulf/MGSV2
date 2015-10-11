@@ -52,7 +52,7 @@ static char chgstate[4];
 static TextLayer *s_second_layer;
 static TextLayer *s_third_layer;
 static TextLayer *s_fourth_layer;
-static TextLayer *s_fifth_layer;
+//static TextLayer *s_fifth_layer;
 static bool s_power_saving = false;
 static bool s_temp_format_f = false;
 
@@ -60,15 +60,15 @@ static bool s_temp_format_f = false;
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
   static char temperature_f_buffer[8];
-  static char temperature_c_buffer[8];
+//   static char temperature_c_buffer[8];
   static char conditions_buffer[32];
   static char weather_layer_buffer[32];
   
 //   Tuple *power_saving_t = dict_find(iterator, KEY_POWERSAVING);
-  Tuple *temp_formate_f_t = dict_find(iterator, KEY_IMPERIAL);
+//   Tuple *temp_formate_f_t = dict_find(iterator, KEY_IMPERIAL);
   
 //   s_power_saving = power_saving_t->value->int8;
-  s_temp_format_f = temp_formate_f_t->value->int8;
+//   s_temp_format_f = temp_formate_f_t->value->int8;
   
   // Read first item
   Tuple *t = dict_read_first(iterator);
@@ -80,12 +80,15 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     case KEY_TEMPERATURE_F:
       snprintf(temperature_f_buffer, sizeof(temperature_f_buffer), "%dF", (int)t->value->int32);
       break;
+    /*
     case KEY_TEMPERATURE_C:
       snprintf(temperature_c_buffer, sizeof(temperature_c_buffer), "%dC", (int)t->value->int32);
       break;
+    */
     case KEY_CONDITIONS:
       snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", t->value->cstring);
       break;
+    /*
     case KEY_POWERSAVING:
       if((int)t->value->int8 < 109){
         s_power_saving = false;
@@ -104,6 +107,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         persist_write_bool(KEY_IMPERIAL, true);
       }
       break;
+    */
     default:
       APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
       break;
@@ -114,11 +118,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   }
   
   // Assemble full string and display
-  if(s_temp_format_f){
-    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s,%s", temperature_f_buffer, conditions_buffer);
-  }else{
-    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s,%s", temperature_c_buffer, conditions_buffer);
-  }
+  snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s", temperature_f_buffer);
   text_layer_set_text(s_weather_layer, weather_layer_buffer);
 }
 
@@ -448,16 +448,16 @@ static void main_window_load(Window *window){
   text_layer_set_text_color(s_fourth_layer, GColorBlack);
   text_layer_set_text(s_fourth_layer, "PWR.S");
   
-  s_fifth_layer = text_layer_create(GRect(116,45,50,15));
-  text_layer_set_background_color(s_fifth_layer, GColorClear);
-  text_layer_set_text_color(s_fifth_layer, GColorBlack);
-  text_layer_set_text(s_fifth_layer, "TEMP");
+  //s_fifth_layer = text_layer_create(GRect(116,45,50,15));
+  //text_layer_set_background_color(s_fifth_layer, GColorClear);
+  //text_layer_set_text_color(s_fifth_layer, GColorBlack);
+  //text_layer_set_text(s_fifth_layer, "TEMP");
   
   // Create temperature Layer
-  s_weather_layer = text_layer_create(GRect(30,30,50,15));
+  s_weather_layer = text_layer_create(GRect(116,45,50,15));
   text_layer_set_background_color(s_weather_layer, GColorClear);
   text_layer_set_text_color(s_weather_layer, GColorBlack);
-  text_layer_set_text(s_weather_layer, "Loading...");
+  text_layer_set_text(s_weather_layer, "TEMP");
   
   s_weekday_text_layer = text_layer_create(GRect(115, 100, 50, 30));
   text_layer_set_background_color(s_weekday_text_layer, GColorClear);
@@ -481,7 +481,7 @@ static void main_window_load(Window *window){
   text_layer_set_font(s_second_layer, s_letter_font);
   text_layer_set_font(s_third_layer, s_letter_font);
   text_layer_set_font(s_fourth_layer, s_letter_font);
-  text_layer_set_font(s_fifth_layer, s_letter_font);
+  // text_layer_set_font(s_fifth_layer, s_letter_font);
 
   // Improve the layout to be more like a watchface
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentLeft);
@@ -489,25 +489,25 @@ static void main_window_load(Window *window){
   text_layer_set_text_alignment(s_am_pm_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_weekday_text_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentLeft);
-  text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_weather_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_first_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_second_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_third_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_fourth_layer, GTextAlignmentLeft);
-  text_layer_set_text_alignment(s_fifth_layer, GTextAlignmentLeft);
+  //text_layer_set_text_alignment(s_fifth_layer, GTextAlignmentLeft);
 
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_sec_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_am_pm_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
-  //layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weekday_text_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_first_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_second_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_third_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_fourth_layer));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_fifth_layer));
+  //layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_fifth_layer));
   
   
   // Create battery meter Layer
@@ -580,7 +580,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
   
   // Get weather update every 30 minutes
-  if(tick_time->tm_min % 30 == 0) {
+  if(tick_time->tm_min % 15 == 0) {
     // Begin dictionary
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
