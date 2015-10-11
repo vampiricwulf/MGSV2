@@ -217,7 +217,7 @@ static void battery_callback(BatteryChargeState state) {
   if (state.is_charging) {
     snprintf(chgstate, sizeof(chgstate), "CHA");
   } else {
-    snprintf(chgstate, sizeof(chgstate), " ");
+    snprintf(chgstate, sizeof(chgstate), "%d%%", state.charge_percent);
   }
 }
 
@@ -552,13 +552,13 @@ static void main_window_unload(Window *window){
   fonts_unload_custom_font(s_letter_font);
   // Destroy GBitmap
   gbitmap_destroy(s_background_bitmap);
-  gbitmap_destroy(s_day_mo_bitmap);
-  gbitmap_destroy(s_day_tu_bitmap);
-  gbitmap_destroy(s_day_we_bitmap);
-  gbitmap_destroy(s_day_th_bitmap);
-  gbitmap_destroy(s_day_fr_bitmap);
-  gbitmap_destroy(s_day_sa_bitmap);
-  gbitmap_destroy(s_day_su_bitmap);
+  //gbitmap_destroy(s_day_mo_bitmap);
+  //gbitmap_destroy(s_day_tu_bitmap);
+  //gbitmap_destroy(s_day_we_bitmap);
+  //gbitmap_destroy(s_day_th_bitmap);
+  //gbitmap_destroy(s_day_fr_bitmap);
+  //gbitmap_destroy(s_day_sa_bitmap);
+  //gbitmap_destroy(s_day_su_bitmap);
   gbitmap_destroy(s_diamond_white_bitmap);
   gbitmap_destroy(s_diamond_black_bitmap);
   gbitmap_destroy(s_just_diamond_bitmap);
