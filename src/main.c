@@ -48,6 +48,7 @@ static GFont s_time_small_font;
 static int s_battery_level;
 static TextLayer *s_weather_layer;
 static TextLayer *s_first_layer;
+static char chgstate[4];
 static TextLayer *s_second_layer;
 static TextLayer *s_third_layer;
 static TextLayer *s_fourth_layer;
@@ -213,6 +214,11 @@ static void battery_callback(BatteryChargeState state) {
   s_battery_level = state.charge_percent;
   // Update meter
   layer_mark_dirty(s_battery_layer);
+  if (state.is_charging) {
+    snprintf(chgstate, sizeof(chgstate), "CHA");
+  } else {
+    snprintf(chgstate, sizeof(chgstate), " ");
+  }
 }
 
 static void hands_update_proc(Layer *layer, GContext *ctx) {
@@ -425,7 +431,7 @@ static void main_window_load(Window *window){
   s_first_layer = text_layer_create(GRect(116,1,50,15));
   text_layer_set_background_color(s_first_layer, GColorClear);
   text_layer_set_text_color(s_first_layer, GColorBlack);
-  text_layer_set_text(s_first_layer, "CHA");
+  text_layer_set_text(s_first_layer, chgstate);
   
   s_second_layer = text_layer_create(GRect(117,12,50,15));
   text_layer_set_background_color(s_second_layer, GColorClear);
