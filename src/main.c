@@ -48,7 +48,7 @@ static GFont s_time_small_font;
 static int s_battery_level;
 static TextLayer *s_weather_layer;
 static TextLayer *s_first_layer;
-static char chgstate[4];
+static char chgstate[5];
 static TextLayer *s_second_layer;
 static TextLayer *s_third_layer;
 static TextLayer *s_fourth_layer;
@@ -61,7 +61,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   // Store incoming information
   static char temperature_f_buffer[8];
 //   static char temperature_c_buffer[8];
-  static char conditions_buffer[32];
+  static char conditions_buffer[5];
+  static char cond_layer_buffer[5];
   static char weather_layer_buffer[32];
   
 //   Tuple *power_saving_t = dict_find(iterator, KEY_POWERSAVING);
@@ -120,6 +121,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   // Assemble full string and display
   snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s", temperature_f_buffer);
   text_layer_set_text(s_weather_layer, weather_layer_buffer);
+  snprintf(cond_layer_buffer, sizeof(cond_layer_buffer), "%s", conditions_buffer);
+  text_layer_set_text(s_fourth_layer, cond_layer_buffer);
 }
 
 
@@ -446,7 +449,7 @@ static void main_window_load(Window *window){
   s_fourth_layer = text_layer_create(GRect(116,34,50,15));
   text_layer_set_background_color(s_fourth_layer, GColorClear);
   text_layer_set_text_color(s_fourth_layer, GColorBlack);
-  text_layer_set_text(s_fourth_layer, "PWR.S");
+  text_layer_set_text(s_fourth_layer, "WTHR");
   
   //s_fifth_layer = text_layer_create(GRect(116,45,50,15));
   //text_layer_set_background_color(s_fifth_layer, GColorClear);
