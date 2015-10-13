@@ -16,14 +16,20 @@
     "resources": {
         "media": [
             {
-                "file": "fonts/digital-7 (italic).ttf",
-                "name": "FONT_DIGIT_SEVEN_25",
+                "file": "fonts/5x5 (2).ttf",
+                "name": "FONT_SMALL_PIXEL_15",
                 "type": "font"
             },
             {
-                "file": "fonts/digital-7 (italic).ttf",
-                "name": "FONT_DIGIT_SEVEN_30",
-                "type": "font"
+                "file": "images/icon.png",
+                "menuIcon": true,
+                "name": "IMAGE_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/MGSV2JUSTTHEDIAMOND.png",
+                "name": "IMAGE_JUST_THE_DIAMOND",
+                "type": "png"
             },
             {
                 "file": "fonts/digital-7.ttf",
@@ -42,9 +48,9 @@
                 "type": "font"
             },
             {
-                "file": "images/MGSV2JUSTTHEDIAMOND.png",
-                "name": "IMAGE_JUST_THE_DIAMOND",
-                "type": "png"
+                "file": "images/MGSV2DIAMOND.png",
+                "name": "IMAGE_DIAMOND",
+                "type": "png-trans"
             },
             {
                 "file": "images/bgv2.2.png",
@@ -52,19 +58,13 @@
                 "type": "png"
             },
             {
-                "file": "images/icon.png",
-                "menuIcon": true,
-                "name": "IMAGE_ICON",
-                "type": "png"
+                "file": "fonts/digital-7 (italic).ttf",
+                "name": "FONT_DIGIT_SEVEN_25",
+                "type": "font"
             },
             {
-                "file": "images/MGSV2DIAMOND.png",
-                "name": "IMAGE_DIAMOND",
-                "type": "png-trans"
-            },
-            {
-                "file": "fonts/5x5 (2).ttf",
-                "name": "FONT_SMALL_PIXEL_15",
+                "file": "fonts/digital-7 (italic).ttf",
+                "name": "FONT_DIGIT_SEVEN_30",
                 "type": "font"
             }
         ]
@@ -72,7 +72,6 @@
     "sdkVersion": "3",
     "shortName": "MGSV2",
     "targetPlatforms": [
-        "aplite",
         "basalt"
     ],
     "uuid": "fbf9c9be-8dad-41b7-ba64-2a3790ecf365",

@@ -49,6 +49,7 @@ static int s_battery_level;
 static TextLayer *s_weather_layer;
 static TextLayer *s_first_layer;
 static char chgstate[5];
+static char leapyear[5];
 static TextLayer *s_second_layer;
 static TextLayer *s_third_layer;
 static TextLayer *s_conditions_layer;
@@ -141,7 +142,12 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
 
 
 static void bluetooth_callback(bool connected) {
-   s_bt_connection = connected;
+  s_bt_connection = connected;
+  if (s_bt_connection) {
+    text_layer_set_text(s_third_layer, "CN.D");
+  } else {
+    text_layer_set_text(s_third_layer, "DC.D");
+  }
 }
 
 static void battery_update_proc(Layer *layer, GContext *ctx) {
@@ -315,10 +321,19 @@ static void update_time() {
   
   //create another buffer
   static char date_buffer[] = "0000-000-00";
+  char year[5] = "0000";
   //write current date to buffer
   strftime(date_buffer, sizeof("0000-000-00"), "%Y %h %d", tick_time);
+  strftime(year, sizeof("0000"), "%Y", tick_time);
+  int i = ((year[0] - '0')*1000 + (year[1] - '0')*100 + (year[2] - '0')*10 + (year[3] - '0'))%4;
+  if (i>0) {
+    snprintf(leapyear, sizeof(leapyear), "LY+%d", i);
+  } else {
+    snprintf(leapyear, sizeof(leapyear), "LPYR");
+  }
   //display second
   text_layer_set_text(s_date_layer, date_buffer);
+  text_layer_set_text(s_second_layer, leapyear);
   
   //create another buffer
 //   static char day_buffer[] = "wed";
@@ -436,15 +451,15 @@ static void main_window_load(Window *window){
   text_layer_set_text_color(s_first_layer, GColorBlack);
   text_layer_set_text(s_first_layer, chgstate);
   
-  s_second_layer = text_layer_create(GRect(117,12,50,15));
+  s_second_layer = text_layer_create(GRect(116,12,50,15));
   text_layer_set_background_color(s_second_layer, GColorClear);
   text_layer_set_text_color(s_second_layer, GColorBlack);
-  text_layer_set_text(s_second_layer, "ALM");
+  text_layer_set_text(s_second_layer, leapyear);
   
   s_third_layer = text_layer_create(GRect(116,23,50,15));
   text_layer_set_background_color(s_third_layer, GColorClear);
   text_layer_set_text_color(s_third_layer, GColorBlack);
-  text_layer_set_text(s_third_layer, "DATA");
+  text_layer_set_text(s_third_layer, "BLUE");
   
   s_conditions_layer = text_layer_create(GRect(116,34,50,15));
   text_layer_set_background_color(s_conditions_layer, GColorClear);
