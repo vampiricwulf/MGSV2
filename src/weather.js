@@ -17,11 +17,6 @@ function locationSuccess(pos) {
       // responseText contains a JSON object with weather info
       var json = JSON.parse(responseText);
       var condtext;
-/*
-      // Temperature in Kelvin requires adjustment
-      var temperature_c = Math.round(json.main.temp - 273.15);
-      console.log("Temperature c is " + temperature_c);
-*/
       // Temperature in Kelvin requires adjustment to f
       var temperature_f = Math.round(json.main.temp * 9/5 - 459.67);
       console.log("Temperature f is " + temperature_f);
@@ -53,7 +48,6 @@ function locationSuccess(pos) {
       // Assemble dictionary using our keys
       var dictionary = {
         "KEY_CONDITIONS": condtext,
-//        "KEY_TEMPERATURE_C": temperature_c,
         "KEY_TEMPERATURE_F": temperature_f,
       };
 
@@ -108,39 +102,3 @@ Pebble.addEventListener('showConfiguration', function() {
 
   Pebble.openURL(url);
 });
-/*
-Pebble.addEventListener('webviewclosed', function(e) {
-  var configData = JSON.parse(decodeURIComponent(e.response));
-  console.log('Configuration page returned: ' + JSON.stringify(configData));
-
-  var temperatureFormat = configData.temperatur_format;
-  var powerSavingMode = configData.power_saving;
-  
-  console.log('temp format:' + temperatureFormat);
-  console.log('power saving:' + powerSavingMode);
-
-//   // Assemble dictionary using our keys
-//   var dictionary = {
-//     "KEY_POWERSAVING": powerSavingMode,
-//     "KEY_IMPERIAL": temperatureFormat,
-//   };
-  
-  // Assemble dictionary using our keys
-  var dictionary = {
-    "KEY_POWERSAVING": powerSavingMode,
-    "KEY_IMPERIAL": temperatureFormat,
-  };
-  // Send to watchapp
-  Pebble.sendAppMessage(dictionary, function() {
-  
-      console.log('Send successful!');
-//   if (configData.temperatur_format) {
-//     Pebble.sendAppMessage({
-//       temperatureFormat: configData.temperatur_format,
-//       powerSavingMode: configData.power_saving
-    }, function() {
-    console.log('Send failed!');
-    });
-  
-});
-*/
