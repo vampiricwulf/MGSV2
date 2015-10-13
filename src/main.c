@@ -51,7 +51,7 @@ static TextLayer *s_first_layer;
 static char chgstate[5];
 static TextLayer *s_second_layer;
 static TextLayer *s_third_layer;
-static TextLayer *s_fourth_layer;
+static TextLayer *s_conditions_layer;
 //static TextLayer *s_fifth_layer;
 static bool s_power_saving = false;
 static bool s_temp_format_f = false;
@@ -122,7 +122,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s", temperature_f_buffer);
   text_layer_set_text(s_weather_layer, weather_layer_buffer);
   snprintf(cond_layer_buffer, sizeof(cond_layer_buffer), "%s", conditions_buffer);
-  text_layer_set_text(s_fourth_layer, cond_layer_buffer);
+  text_layer_set_text(s_conditions_layer, cond_layer_buffer);
 }
 
 
@@ -446,10 +446,10 @@ static void main_window_load(Window *window){
   text_layer_set_text_color(s_third_layer, GColorBlack);
   text_layer_set_text(s_third_layer, "DATA");
   
-  s_fourth_layer = text_layer_create(GRect(116,34,50,15));
-  text_layer_set_background_color(s_fourth_layer, GColorClear);
-  text_layer_set_text_color(s_fourth_layer, GColorBlack);
-  text_layer_set_text(s_fourth_layer, "WTHR");
+  s_conditions_layer = text_layer_create(GRect(116,34,50,15));
+  text_layer_set_background_color(s_conditions_layer, GColorClear);
+  text_layer_set_text_color(s_conditions_layer, GColorBlack);
+  text_layer_set_text(s_conditions_layer, "WTHR");
   
   //s_fifth_layer = text_layer_create(GRect(116,45,50,15));
   //text_layer_set_background_color(s_fifth_layer, GColorClear);
@@ -483,7 +483,7 @@ static void main_window_load(Window *window){
   text_layer_set_font(s_first_layer, s_letter_font);
   text_layer_set_font(s_second_layer, s_letter_font);
   text_layer_set_font(s_third_layer, s_letter_font);
-  text_layer_set_font(s_fourth_layer, s_letter_font);
+  text_layer_set_font(s_conditions_layer, s_letter_font);
   // text_layer_set_font(s_fifth_layer, s_letter_font);
 
   // Improve the layout to be more like a watchface
@@ -496,7 +496,7 @@ static void main_window_load(Window *window){
   text_layer_set_text_alignment(s_first_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_second_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_third_layer, GTextAlignmentLeft);
-  text_layer_set_text_alignment(s_fourth_layer, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_conditions_layer, GTextAlignmentLeft);
   //text_layer_set_text_alignment(s_fifth_layer, GTextAlignmentLeft);
 
   // Add it as a child layer to the Window's root layer
@@ -509,7 +509,7 @@ static void main_window_load(Window *window){
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_first_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_second_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_third_layer));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_fourth_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_conditions_layer));
   //layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_fifth_layer));
   
   
